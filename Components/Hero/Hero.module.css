@@ -1,0 +1,68 @@
+.container {
+  height: 90vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.metadata {
+  margin-right: 1.5rem;
+}
+
+.title {
+  /* font-family: 'SendFlowers', serif; */
+  font-size: 3.6rem;
+  line-height: 1;
+  color: var(--text-purple);
+  letter-spacing: -0.025rem;
+  font-weight: 800;
+}
+
+.title span {
+  color: var(--text-black);
+  display: block;
+}
+
+.subtitle {
+  margin-top: 0.75rem;
+  font-size: 1.6rem;
+  line-height: 2rem;
+
+  color: var(--text-black);
+}
+
+.button {
+  background-color: var(--text-purple);
+  cursor: pointer;
+  color: white;
+  /* outline: 1px dashed red; */
+  border: 0px;
+  border-radius: 4px;
+  padding: 1rem;
+
+  margin-top: 0.75rem;
+}
+
+.button:hover {
+  background-color: var(--text-purple-dark);
+}
+
+@media (min-width: 1024px) {
+  .title {
+    font-size: 5.2rem;
+  }
+
+  .subtitle {
+    font-size: 2rem;
+    margin-top: 1.2rem;
+  }
+
+  .title span {
+    display: inline;
+  }
+
+  .button {
+    margin-top: 1.2rem;
+  }
+}
