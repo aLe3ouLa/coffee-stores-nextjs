@@ -1,6 +1,8 @@
 import Head from "next/head";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/router";
+import styles from '../../styles/CoffeeStore.module.css';
 
 import COFFEE_STORES from "../../data/coffee-stores.json";
 
@@ -37,7 +39,7 @@ const CoffeeStore = (props) => {
     return <p>Loading...</p>
   }
 
-  const { name, address } = props.coffeeStore;
+  const { name, address, neighbourhood, imgUrl } = props.coffeeStore;
 
   return <div>
     <Head>
@@ -46,9 +48,23 @@ const CoffeeStore = (props) => {
     <Link href="/">
       <a>Back to home</a>
     </Link>
-    <p>Coffee store : {name}</p>
-    <p>Coffee store : {address}</p>
-    Coffee store page {id}</div>
+    <div className={styles.details}>
+
+      <div>
+        <h1>{name}</h1>
+        <Image className={styles.image} src={imgUrl} width={280} height={160} alt="Store" />
+      </div>
+
+      <div className={styles.metadata}>
+
+        <p>Address : {address}</p>
+        <p>Neighboorhood : {neighbourhood}</p>
+
+        <button>Like</button>
+      </div>
+    </div>
+
+  </div>
 }
 
 export default CoffeeStore;
