@@ -7,6 +7,7 @@ const Hero = (props) => {
       <div className={styles.metadata}>
         <h1 className={styles.title}>Coffee <span>connoisseur</span></h1>
         <p className={styles.subtitle}>Discover your local coffee shops!</p>
+        {props.hasError && <p>Something went wrong: {props.errorMessage}</p>}
         <button className={styles.button} onClick={props.handleOnClick}>
           {props.buttonText}
         </button>

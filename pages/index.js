@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import Head from "next/head";
 import Card from "../Components/Card";
 import Hero from "../Components/Hero";
@@ -5,6 +7,7 @@ import styles from "../styles/Home.module.css";
 
 import COFFEE_STORES from "../data/coffee-stores.json";
 import { fetchCoffeeStores, fetchImage } from "../lib/coffee-stores";
+import useTrackLocation from "../hooks/use-track-location";
 
 const fetchData = async () => {
   try {
@@ -42,6 +45,29 @@ export async function getStaticProps() {
 }
 
 export default function Home(props) {
+  const [coffeeStores, setCoffeeStores] = useState(props.COFFEE_STORES);
+  const { handleTrackLocation, errorMessage, latLong, isFindingLocation } = useTrackLocation();
+
+  useEffect(() => {
+    async function fetchData() {
+      if (latLong) {
+        try {
+          const coffeeStores = await fetchCoffeeStores(latLong);
+          setCoffeeStores(coffeeStores);
+        }
+        catch (error) {
+
+        }
+      }
+    }
+
+    fetchData();
+  }, [latLong])
+
+  const handleClick = () => {
+    handleTrackLocation();
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -51,16 +77,16 @@ export default function Home(props) {
       </Head>
 
       <Hero
-        buttonText={"View stores nearby"}
-        handleOnClick={() => {
-          console.log("click");
-        }}
+        buttonText={isFindingLocation ? 'Locating...' : "View stores nearby"}
+        handleOnClick={handleClick}
+        hasError={!!errorMessage}
+        errorMessage={errorMessage}
       />
-      {props.COFFEE_STORES && <>
-        {props.COFFEE_STORES.length > 0 ? <h2 className={styles.header}>Toronto stores</h2> : null}
+      {coffeeStores && <>
+        {coffeeStores.length > 0 ? <h2 className={styles.header}>Toronto stores</h2> : null}
 
         <div className={styles.layout}>
-          {props.COFFEE_STORES.map((coffee) => {
+          {coffeeStores.map((coffee) => {
             return (
               <Card
                 key={coffee.id}
