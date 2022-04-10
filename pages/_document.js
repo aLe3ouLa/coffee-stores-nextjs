@@ -4,7 +4,6 @@ class MyDocument extends Document {
   render() {
     return (<Html lang="en">
       <Head>
-        <link rel="preload" href='/fonts/SendFlowers-Regular.ttf' as="Font" crossOrigin='anonymous' />
         <link rel="preload" href='/fonts/Nunito-Black.ttf' as="Font" crossOrigin='anonymous' />
         <link rel="preload" href='/fonts/Nunito-BlackItalic.ttf' as="Font" crossOrigin='anonymous' />
         <link rel="preload" href='/fonts/Nunito-Bold.ttf' as="Font" crossOrigin='anonymous' />

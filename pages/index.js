@@ -1,14 +1,43 @@
 import Head from "next/head";
-import Image from "next/image";
 import Card from "../Components/Card";
 import Hero from "../Components/Hero";
 import styles from "../styles/Home.module.css";
 
 import COFFEE_STORES from "../data/coffee-stores.json";
+import { fetchCoffeeStores, fetchImage } from "../lib/coffee-stores";
 
-export async function getStaticProps(context) {
+const fetchData = async () => {
+  try {
+    const data = await fetchCoffeeStores();
+    const transformedData = data?.results?.map((venue) => {
+      return {
+        id: venue.fsq_id,
+        ...venue
+      }
+    }) || [];
+
+    return transformedData || COFFEE_STORES;
+
+  }
+  catch (error) {
+    console.error(error)
+  }
+}
+
+export async function getStaticProps() {
+  const data = await fetchData() || COFFEE_STORES;
+
+  const endData = await Promise.all(data.map(async (venue, key) => {
+    const photos = await fetchImage();
+    const imgUrl = photos[key]
+    return {
+      ...venue,
+      imgUrl
+    }
+  }));
+
   return {
-    props: { COFFEE_STORES }
+    props: { COFFEE_STORES: endData }
   }
 }
 
@@ -37,7 +66,7 @@ export default function Home(props) {
                 key={coffee.id}
                 className={styles.card}
                 storeName={coffee.name}
-                imgUrl={coffee.imgUrl}
+                imgUrl={coffee.imgUrl ?? 'https://images.unsplash.com/photo-1498804103079-a6351b050096?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2468&q=80'}
                 href={`/coffee-store/${coffee.id}`}
               />
             );
